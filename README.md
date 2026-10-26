@@ -1,5 +1,7 @@
 # e-golf-mib2 — CarPlay on the VW Active Info Display
 
+[![Support me on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/yumiko58185)
+
 Mods for the Volkswagen **MIB2 High (Discover Pro)** head unit that bring more of Apple CarPlay to the
 **Active Info Display (AID)** digital cockpit:
 
@@ -192,6 +194,13 @@ AID: arrow, distance, distance and time to destination
 Now playing reads the iAP2 driver's PPS object `/ramdisk/pps/iap2/nowplaying` and fills the AID audio tab.
 Map zoom forwards the steering-wheel buttons to the CarPlay map stream (omonob). Sources and build notes:
 [`src/`](src/README.md). Credits and licenses: [NOTICE.md](NOTICE.md).
+
+## Support
+
+The mods are free. If they are useful to you, you can support further work (street names on the AID,
+map fixes, test hardware) on [Ko-fi](https://ko-fi.com/yumiko58185).
+
+[![Support me on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/yumiko58185)
 
 ## License
 
