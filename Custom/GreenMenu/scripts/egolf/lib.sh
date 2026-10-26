@@ -7,6 +7,13 @@ VERSION="1.0.0"
 PATH=$PATH:/mnt/app/armle/bin:/mnt/app/armle/usr/bin:/mnt/app/armle/sbin:/mnt/app/armle/usr/sbin
 export PATH
 
+# Some units have only gawk.
+if command -v awk >/dev/null 2>&1; then
+    AWK=awk
+else
+    AWK=/mnt/app/armle/usr/bin/gawk
+fi
+
 # Host tests set CARPLAY_AID_TEST_ROOT to a fake filesystem; on the unit it is empty.
 R=${CARPLAY_AID_TEST_ROOT:-}
 APP=$R/mnt/app
@@ -52,6 +59,7 @@ fsize() {
 }
 
 need_tools() {
+    [ -x "$AWK" ] || command -v "$AWK" >/dev/null 2>&1 || fail "neither awk nor gawk found"
     for t in "$@"; do
         command -v "$t" >/dev/null 2>&1 || fail "required tool '$t' not found in PATH ($PATH)"
     done
@@ -87,7 +95,7 @@ install_file() {
 
 # Prints lsd.sh without our block.
 lsd_strip() {
-    awk -v b="$MARK_BEGIN" -v e="$MARK_END" '
+    $AWK -v b="$MARK_BEGIN" -v e="$MARK_END" '
         index($0, b) == 1 { skip = 1; next }
         $0 == e { skip = 0; next }
         !skip { print }

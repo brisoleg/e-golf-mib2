@@ -1,6 +1,6 @@
 #!/bin/ksh
 # e-golf-mib2 installer: CarPlay route guidance, now playing and map zoom on the VW AID.
-# Run on the MMX as root:  ksh /path/to/e-golf-mib2/install.sh
+# Run from the GEM (MQBCoding -> e-golf-mib2) or on the MMX as root:  ksh /path/to/egolf/install.sh
 # Safe to run again (it updates an existing install). Reboot the unit afterwards.
 
 BASE=${0%/*}
@@ -9,7 +9,7 @@ BASE=${0%/*}
 P=$BASE/payload
 
 say "e-golf-mib2 $VERSION installer"
-need_tools awk grep cp mv rm mkdir chmod ls mount
+need_tools grep cp mv rm mkdir chmod ls mount
 check_mmx
 
 for f in nav/librgi_mu1367_m1d.so nav/rgi-mm-ipod-launcher music/CarPlayAID.jar zoom/CarPlayClusterControls.jar; do
@@ -74,7 +74,7 @@ CPCC_REFS=`grep -c 'CarPlayClusterControls.jar' "$STAGE/lsd.base"`
 } > "$STAGE/block"
 
 # Insert before the J9 launch: the first "export LD_PRELOAD=" after the BOOTCLASSPATH definition.
-awk -v blk="$STAGE/block" '
+$AWK -v blk="$STAGE/block" '
     /^BOOTCLASSPATH=-Xbootclasspath\/a:/ { bcp = 1 }
     bcp && !done && /^export LD_PRELOAD=/ {
         while ((getline l < blk) > 0) print l

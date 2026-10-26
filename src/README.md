@@ -1,6 +1,6 @@
 # Sources
 
-The binaries in `payload/` are built from these sources. `payload/SHA256SUMS` lists their hashes.
+The binaries in `Custom/GreenMenu/scripts/egolf/payload/` are built from these sources; `payload/SHA256SUMS` lists their hashes.
 
 | Folder | Builds | Runs in |
 | --- | --- | --- |

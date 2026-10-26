@@ -52,46 +52,60 @@ stay passive on any mismatch.
 ## Requirements
 
 - MIB2 High with the firmware above and an Active Info Display.
-- **Root shell on the MMX** (the main CPU of the unit) over SSH or telnet. How to get one is outside this
-  project; the M.I.B. (More Incredible Bash) toolbox is the usual way.
+- [**MIB2 Toolbox**](https://github.com/jilleb/mib2-toolbox) by jilleb installed on the unit, and its SD card
+  (the one with the `Toolbox` folder). The Green Engineering Menu must be enabled (developer mode,
+  set with VCDS / OBDeleven on module 5F).
 - For **map zoom**: omonob's [CarPlay Maps VC](https://github.com/omonob/MHI2-Carplay-Maps) installed
   (it puts the CarPlay map on the AID). Without it the installer skips zoom.
 - An iPhone with CarPlay over USB.
 
 Navigation hints and now playing were tested together with CarPlay Maps VC and do not depend on its
-files.
+files. A root shell (SSH / telnet) is not needed, but works too, see [Install over SSH](#install-over-ssh).
 
-## Install
+## Install with the MIB2 Toolbox
 
-1. Download this repository (**Code → Download ZIP**, or a release) and unpack it. You need the
-   `e-golf-mib2` folder with `install.sh`, `lib.sh` and `payload/`.
-2. Optional: check the files on your computer:
-   ```sh
-   cd e-golf-mib2/payload && shasum -a 256 -c SHA256SUMS
+1. Download this repository (**Code → Download ZIP**) and unpack it.
+2. Copy the `Custom` folder from it to the root of your **MIB2 Toolbox SD card**, merging it with the
+   `Custom` folder that is already there. You get:
    ```
-3. Copy the folder to the unit, either way works:
-   - **over the network** (unit and computer on the same Wi-Fi):
-     ```sh
-     scp -O -r e-golf-mib2 root@<unit-ip>:/ramdisk/
-     ```
-     `/ramdisk` is RAM and is cleared on reboot. Use `-O` (legacy scp protocol) for the unit's old sshd.
-   - **on an SD card or USB stick** (FAT32): put the `e-golf-mib2` folder in the root and insert the card.
-     It shows up as `/fs/sda0` or `/fs/sdb0` (SD slots) or `/fs/usb0` (USB).
-4. Unplug the iPhone. In the MMX shell run:
-   ```sh
-   ksh /ramdisk/e-golf-mib2/install.sh
+   Custom/GreenMenu/egolf-carplay.esd
+   Custom/GreenMenu/scripts/egolf/        (install.sh, payload/, ...)
    ```
-   (or `ksh /fs/sda0/e-golf-mib2/install.sh` etc.). It checks everything first and stops without changes
-   if something does not match. The last line must be `INSTALL_OK`.
-5. **Reboot the unit**: hold the power button for about 10 seconds until it restarts.
-6. Plug in the iPhone, start a route in Apple Maps or Google Maps and open the navigation view on the AID.
+   Keep loose `.sh` files out of `Custom/GreenMenu/scripts/`: the toolbox then copies only those and skips
+   folders. Put your own scripts into a subfolder as well.
+3. Insert the card (only one SD card in the unit) and unplug the iPhone.
+4. Hold the **MENU** button → **Testmode** → **Green Engineering Menu** → **mqbcoding** →
+   **Customization** → **GreenMenu** → **Install GreenMenu screens and scripts from Custom/GreenMenu**.
+5. Leave the Green Engineering Menu and open it again. There is a new screen **mqbcoding → e-golf-mib2**:
+
+   | Button | What it does |
+   | --- | --- |
+   | **Install / update** | Installs all three features. It checks everything first and stops without changes if something does not match; the last line must be `INSTALL_OK`. |
+   | **Status** | Shows what is installed (read only). |
+   | **Navigation hints off / on** | Turns the hints off or on without uninstalling (applies after replugging the iPhone). |
+   | **Uninstall** | Removes everything and restores the backups, see [Uninstall](#uninstall). |
+
+6. Press **Install / update**, wait for `INSTALL_OK`, then **reboot the unit**: hold the power button for
+   about 10 seconds until it restarts.
+7. Plug in the iPhone, start a route in Apple Maps or Google Maps and open the navigation view on the AID.
    The hints appear about 30 s after the unit has booted.
-7. Check what is installed at any time (read only):
-   ```sh
-   ksh /ramdisk/e-golf-mib2/status.sh
-   ```
 
-Running `install.sh` again updates an existing install.
+The scripts stay on the unit in `/eso/hmi/engdefs/scripts/egolf/`, so the SD card is not needed afterwards.
+Pressing **Install / update** again updates an existing install; to update to a new version, repeat
+steps 1–6.
+
+## Install over SSH
+
+If you already have a root shell on the MMX (the main CPU of the unit):
+
+```sh
+scp -O -r Custom/GreenMenu/scripts/egolf root@<unit-ip>:/ramdisk/
+ssh root@<unit-ip> ksh /ramdisk/egolf/install.sh
+```
+
+`/ramdisk` is RAM and is cleared on reboot. Use `-O` (legacy scp protocol) for the unit's old sshd.
+`status.sh`, `nav_off.sh`, `nav_on.sh` and `uninstall.sh` in the same folder work the same way.
+Optional, before copying: `cd Custom/GreenMenu/scripts/egolf/payload && shasum -a 256 -c SHA256SUMS`.
 
 ### What the installer changes
 
@@ -111,22 +125,18 @@ touched: no Wi-Fi, SSH, boot scripts, `dio_manager` or omonob files.
 
 ## Uninstall
 
-```sh
-ksh /ramdisk/e-golf-mib2/uninstall.sh
-```
-
-Then reboot the unit. It removes our block from `lsd.sh`, our jars and classes, the hook and its switches,
+Press **Uninstall** on the **e-golf-mib2** screen (or run `ksh /eso/hmi/engdefs/scripts/egolf/uninstall.sh`),
+then reboot the unit. It removes our block from `lsd.sh`, our jars and classes, the hook and its switches,
 restores the stock `mm-ipod` and `iap2.cfg`, and puts back a `BatteryVC.jar` it had moved aside. A
 `CarPlayClusterControls.jar` from omonob's own installer stays. The backup folder
 `/mnt/app/carplay_aid_backup` is kept; delete it by hand once you are happy.
 
-### Turn navigation hints off without uninstalling
+The Green Engineering Menu screen itself stays so you can reinstall. To remove it too:
 
 ```sh
-mount -uw /mnt/app && touch /mnt/app/rgi_disable
+mount -uw /mnt/app
+rm -rf /eso/hmi/engdefs/egolf-carplay.esd /eso/hmi/engdefs/scripts/egolf
 ```
-
-Then unplug and replug the iPhone: `mm-ipod` restarts without the hook. Delete the file to turn it back on.
 
 ### Manual rollback (if the scripts cannot run)
 

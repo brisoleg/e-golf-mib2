@@ -1,6 +1,6 @@
 #!/bin/ksh
 # e-golf-mib2 uninstaller: puts the unit back to the state before install.sh.
-# Run on the MMX as root:  ksh /path/to/e-golf-mib2/uninstall.sh
+# Run from the GEM (MQBCoding -> e-golf-mib2) or on the MMX as root:  ksh /path/to/egolf/uninstall.sh
 # Reboot the unit afterwards.
 
 BASE=${0%/*}
@@ -8,7 +8,7 @@ BASE=${0%/*}
 . "$BASE/lib.sh"
 
 say "e-golf-mib2 $VERSION uninstaller"
-need_tools awk grep cp mv rm chmod ls mount
+need_tools grep cp mv rm chmod ls mount
 check_mmx
 
 STAGE=$RAMDISK/carplay_aid.$$

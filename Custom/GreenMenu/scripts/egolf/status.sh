@@ -1,6 +1,6 @@
 #!/bin/ksh
 # e-golf-mib2 status: read only, changes nothing.
-# Run on the MMX:  ksh /path/to/e-golf-mib2/status.sh
+# Run from the GEM (MQBCoding -> e-golf-mib2) or on the MMX:  ksh /path/to/egolf/status.sh
 
 BASE=${0%/*}
 [ "$BASE" = "$0" ] && BASE=.

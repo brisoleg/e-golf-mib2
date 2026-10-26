@@ -1,0 +1,42 @@
+###########################################################################################
+#
+# e-golf-mib2: CarPlay navigation hints, now playing and map zoom on the AID
+# https://github.com/brisoleg/e-golf-mib2
+#
+###########################################################################################
+#
+# Main -> MQBCoding -> e-golf-mib2
+# Scripts: /eso/hmi/engdefs/scripts/egolf/ (copied by Customization -> GreenMenu)
+#
+###########################################################################################
+screen  e-golf-mib2 MQBCoding
+
+keyValue
+    value   String sys 0x00000000 0
+    label   "CarPlay on the AID: navigation hints, now playing, map zoom"
+    poll    0
+
+keyValue
+    value   String sys 0x00000000 0
+    label   "Unplug the iPhone first. Reboot the unit after install or uninstall."
+    poll    0
+
+script
+    value    sys 1 0x0100 "/eso/hmi/engdefs/scripts/egolf/install.sh"
+    label    "Install / update"
+
+script
+    value    sys 1 0x0100 "/eso/hmi/engdefs/scripts/egolf/status.sh"
+    label    "Status"
+
+script
+    value    sys 1 0x0100 "/eso/hmi/engdefs/scripts/egolf/nav_off.sh"
+    label    "Navigation hints off"
+
+script
+    value    sys 1 0x0100 "/eso/hmi/engdefs/scripts/egolf/nav_on.sh"
+    label    "Navigation hints on"
+
+script
+    value    sys 1 0x0100 "/eso/hmi/engdefs/scripts/egolf/uninstall.sh"
+    label    "Uninstall"

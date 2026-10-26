@@ -6,4 +6,5 @@ SHA256SUMS text eol=lf
 *.so binary
 *.class binary
 *.jar binary
-payload/nav/rgi-mm-ipod-launcher binary
+Custom/GreenMenu/scripts/egolf/payload/nav/rgi-mm-ipod-launcher binary
+*.esd text eol=lf
