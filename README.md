@@ -53,8 +53,7 @@ stay passive on any mismatch.
 
 - MIB2 High with the firmware above and an Active Info Display.
 - [**MIB2 Toolbox**](https://github.com/jilleb/mib2-toolbox) by jilleb installed on the unit, and its SD card
-  (the one with the `Toolbox` folder). The Green Engineering Menu must be enabled (developer mode,
-  set with VCDS / OBDeleven on module 5F).
+  (the one with the `Toolbox` folder). The Green Engineering Menu must be enabled.
 - For **map zoom**: omonob's [CarPlay Maps VC](https://github.com/omonob/MHI2-Carplay-Maps) installed
   (it puts the CarPlay map on the AID). Without it the installer skips zoom.
 - An iPhone with CarPlay over USB.
