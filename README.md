@@ -14,6 +14,8 @@ Mods for the Volkswagen **MIB2 High (Discover Pro)** head unit that bring more o
 One installer, one uninstaller, every change backed up. Firmware other than the one listed under
 [Tested on](#tested-on) is refused before anything is written.
 
+Built on the work of **omonob**, **LuKa** and **edzenis**, see [Credits](#credits).
+
 > [!WARNING]
 > This modifies system files of your car's head unit. You do it at your own risk. Read the whole page
 > first, keep the backups, and do the first test with the car parked.
@@ -194,6 +196,22 @@ AID: arrow, distance, distance and time to destination
 Now playing reads the iAP2 driver's PPS object `/ramdisk/pps/iap2/nowplaying` and fills the AID audio tab.
 Map zoom forwards the steering-wheel buttons to the CarPlay map stream (omonob). Sources and build notes:
 [`src/`](src/README.md). Credits and licenses: [NOTICE.md](NOTICE.md).
+
+## Credits
+
+This project stands on the work of others. Thank you!
+
+| Who | What this project uses |
+| --- | --- |
+| [omonob](https://github.com/omonob) — [MHI2-Carplay-Maps](https://github.com/omonob/MHI2-Carplay-Maps) | The CarPlay map on the AID (a requirement, installed separately) and `CarPlayClusterControls.jar` for the steering-wheel zoom, shipped unmodified (GPL-3.0) |
+| [LuKa](https://github.com/luka-dev) — [mib2q-carplay-rgi](https://github.com/luka-dev/mib2q-carplay-rgi) | `ManeuverMapper`: CarPlay maneuver types → VW cockpit arrows |
+| [LuKa](https://github.com/luka-dev) — [qnx65-armv7-toolchain](https://github.com/luka-dev/qnx65-armv7-toolchain) | The QNX 6.5 ARMv7 toolchain used to build the native hook |
+| [edzenis](https://github.com/edzenis) — [mib2high-carplay-rgi](https://github.com/edzenis/mib2high-carplay-rgi) | Reference for the iAP2 route guidance messages |
+| [jilleb](https://github.com/jilleb) — [mib2-toolbox](https://github.com/jilleb/mib2-toolbox) | The Green Engineering Menu install method |
+
+Written for this project: the native hook for the iPhone driver on MU1367 (identification, route
+guidance request and receive), the route guidance → AID driver, now playing on the AID and the installer.
+License details are in [NOTICE.md](NOTICE.md).
 
 ## Support
 
