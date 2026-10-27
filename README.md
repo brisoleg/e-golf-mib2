@@ -22,15 +22,7 @@ Built on the work of **omonob**, **LuKa** and **edzenis**, see [Credits](#credit
 
 ## Screenshots
 
-<!-- Put the pictures into docs/screenshots/ and replace the placeholders below. -->
-
-| Navigation hints (Apple Maps) | Navigation hints (Google Maps) |
-| --- | --- |
-| _screenshot coming soon_ <!-- ![Apple Maps hints on the AID](docs/screenshots/nav-apple-maps.jpg) --> | _screenshot coming soon_ <!-- ![Google Maps hints on the AID](docs/screenshots/nav-google-maps.jpg) --> |
-
-| Now playing | Map zoom |
-| --- | --- |
-| _screenshot coming soon_ <!-- ![Now playing on the AID](docs/screenshots/now-playing.jpg) --> | _screenshot coming soon_ <!-- ![CarPlay map zoom on the AID](docs/screenshots/map-zoom.jpg) --> |
+![Navigation hints from CarPlay on the AID: arrow and distance to the next maneuver, distance and time to the destination, CarPlay map in the middle](docs/screenshots/nav-hints-aid.jpg)
 
 ## Tested on
 
