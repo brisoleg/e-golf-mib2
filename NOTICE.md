@@ -13,10 +13,13 @@ public CarPlay SDK header (`CPManeuver.h`) and the HMI's own NavSD classes; it c
 The CarPlay map video on the AID itself is omonob's **CarPlay Maps VC** and is not part of this package;
 install it from the upstream releases first.
 
-`CarPlayAID.jar` contains a patched copy of the HMI class
-`de.vw.mib.bap.mqbab2.audiosd.functions.CurrentStationInfo` (compiled from the unit's own `lsd.jxe`
-with two added calls, see `src/carplayaid/README.md`). Its source is not published here because it is
+`CarPlayAID.jar` contains patched copies of the HMI classes
+`de.vw.mib.bap.mqbab2.audiosd.functions.CurrentStationInfo` and
+`de.vw.mib.asl.internal.kombipictureserver.usecaces.CoverArt` (compiled from the unit's own `lsd.jxe`
+with a few added calls, see `src/carplayaid/README.md`). Their source is not published here because it is
 Volkswagen / e.solutions code.
+
+`cpcover` uses the unit's own QNX image library (`libimg`) at run time; nothing of it is shipped.
 
 Volkswagen, Apple CarPlay, Apple Maps, Google Maps and other names are trademarks of their owners.
 This project is not affiliated with or endorsed by any of them.

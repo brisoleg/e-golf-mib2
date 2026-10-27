@@ -1,5 +1,5 @@
 #!/bin/ksh
-# e-golf-mib2 installer: CarPlay route guidance, now playing and map zoom on the VW AID.
+# e-golf-mib2 installer: CarPlay route guidance, now playing, album art and map zoom on the VW AID.
 # Run from the GEM (MQBCoding -> e-golf-mib2) or on the MMX as root:  ksh /path/to/egolf/install.sh
 # Safe to run again (it updates an existing install). Reboot the unit afterwards.
 
@@ -12,7 +12,7 @@ say "e-golf-mib2 $VERSION installer"
 need_tools grep cp mv rm mkdir chmod ls mount
 check_mmx
 
-for f in nav/librgi_mu1367_m1d.so nav/rgi-mm-ipod-launcher music/CarPlayAID.jar zoom/CarPlayClusterControls.jar; do
+for f in nav/librgi_mu1367_m1d.so nav/rgi-mm-ipod-launcher music/CarPlayAID.jar music/cpcover zoom/CarPlayClusterControls.jar; do
     [ -s "$P/$f" ] || fail "payload file $f missing; copy the whole folder"
 done
 for c in $M2_CLASSES; do
@@ -60,7 +60,7 @@ CPCC_REFS=`grep -c 'CarPlayClusterControls.jar' "$STAGE/lsd.base"`
 
 {
     echo "$MARK_BEGIN (run uninstall.sh or delete this block to undo)"
-    echo '# CarPlayAID.jar: CarPlay now playing on the AID audio tab + route guidance autostart'
+    echo '# CarPlayAID.jar: CarPlay now playing and album art on the AID audio tab + route guidance autostart'
     echo 'if [[ -f "$BASE_DIR/lsd/jars/CarPlayAID.jar" ]]; then'
     echo '    BOOTCLASSPATH="$BOOTCLASSPATH -Xbootclasspath/p:$BASE_DIR/lsd/jars/CarPlayAID.jar"'
     echo 'fi'
@@ -129,13 +129,16 @@ else
     say "   iap2.cfg: route guidance IDs already present"
 fi
 
-say "-- now playing (CarPlayAID.jar)"
+say "-- now playing and album art (CarPlayAID.jar)"
 if [ -e "$JARS/BatteryVC.jar" ]; then
     # BatteryVC.jar replaces the same HMI class (CurrentStationInfo); only one of them can be active.
     mv "$JARS/BatteryVC.jar" "$BACKUP/BatteryVC.jar" || fail "move BatteryVC.jar aside"
     say "   BatteryVC.jar moved to $BACKUP (uninstall.sh puts it back)"
 fi
 install_file "$P/music/CarPlayAID.jar" "$JARS/CarPlayAID.jar" 644
+mkdir -p "$COVER_DIR" || fail "cannot create $COVER_DIR"
+install_file "$P/music/cpcover" "$COVER_TOOL" 755
+say "   album art tool installed ($COVER_TOOL)"
 
 say "-- steering-wheel map zoom"
 if [ "$ZOOM" = no ]; then

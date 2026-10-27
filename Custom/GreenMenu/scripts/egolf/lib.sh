@@ -1,7 +1,7 @@
 # Shared paths and helpers for install.sh / uninstall.sh / status.sh. Sourced, not executed.
 # Target: VW MIB2 High (MHI2) MU1367, QNX 6.5 MMX shell (SSH or telnet as root).
 
-VERSION="1.0.0"
+VERSION="1.1.0"
 
 # Non-interactive SSH on the MMX has a minimal PATH; the usual tools live under /mnt/app/armle.
 PATH=$PATH:/mnt/app/armle/bin:/mnt/app/armle/usr/bin:/mnt/app/armle/sbin:/mnt/app/armle/usr/sbin
@@ -32,6 +32,11 @@ RGI_DIR=$APP/rgi
 RGI_SO=$RGI_DIR/librgi_mu1367_m1c.so
 M2_DIR=$JARS/ua/mib/rgi
 OMONOB_DIR=$APP/carplaymaps
+# Album art: CarPlayAID.jar runs this tool (path compiled into ua.mib.carplayaid.CarPlayCover).
+COVER_DIR=$APP/carplayaid
+COVER_TOOL=$COVER_DIR/cpcover
+# OEM cover cache (same path on every Qnet node); the PNGs there are named egolf_cp_<handle>.png.
+ICAB_TMP=$R/var/app/icab/tmp
 BACKUP=$APP/carplay_aid_backup
 
 # Known stock MU1367 sizes (no sha256 on the unit; the launcher and the hook check SHA-256 at runtime).

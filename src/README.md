@@ -6,7 +6,8 @@ The binaries in `Custom/GreenMenu/scripts/egolf/payload/` are built from these s
 | --- | --- | --- |
 | `native/` | `librgi_mu1367_m1d.so` (iAP2 hook) and `rgi-mm-ipod-launcher` | `mm-ipod` (QNX 6.5, ARMv7) |
 | `m2/` | `ua/mib/rgi/*.class` (route guidance → AID) | HMI Java VM (IBM J9, Java 1.4 class files) |
-| `carplayaid/` | `CarPlayAID.jar` (now playing + route guidance autostart) | HMI Java VM |
+| `carplayaid/` | `CarPlayAID.jar` (now playing, album art + route guidance autostart) | HMI Java VM |
+| `cpcover/` | `cpcover` (current CarPlay artwork → 256×256 PNG) | started by `CarPlayAID.jar` (QNX 6.5, ARMv7) |
 
 ## Native (`native/`)
 
@@ -30,6 +31,18 @@ The hook checks the SHA-256 of the loaded `ipod-drvr-iap2.so` and the stock tabl
 anything; on any mismatch it stays passive. The launcher checks the SHA-256 of the stock `mm-ipod` and
 only adds the hook to `LD_PRELOAD` when `/mnt/app/rgi_enable_preload` exists and `/mnt/app/rgi_disable`
 does not. The hook is loaded from `/mnt/app/rgi/librgi_mu1367_m1c.so` (path compiled into the launcher).
+
+## Album art tool (`cpcover/`)
+
+Same toolchain, links the unit's `libimg`:
+
+```sh
+qcc -Vgcc_ntoarmv7le -O2 -Wall -Wextra -o cpcover src/cpcover/cpcover.c -limg
+```
+
+It sends the iAP2 driver's own artwork request (`_IO_MSG` subtype 0x2100 on `/dev/ipod0`), checks the size
+against `MediaItemArtworkSize` from PPS (`-e`), and writes the picture as PNG 256×256 RGB with `libimg`
+(`LIBIMG_CFGFILE=/mnt/app/eso/hmi/lsd/img.conf`, codecs from `/mnt/app/armle/lib/dll`).
 
 ## Java (`m2/`, `carplayaid/`)
 

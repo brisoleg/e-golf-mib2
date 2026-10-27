@@ -9,6 +9,7 @@ Mods for the Volkswagen **MIB2 High (Discover Pro)** head unit that bring more o
 | --- | --- |
 | **Navigation hints** | Turn arrow, distance to the next maneuver, distance and time to destination from **Apple Maps** and **Google Maps** running in CarPlay |
 | **Now playing** | Song title, artist and album from CarPlay on the AID audio tab instead of the plain "Apple CarPlay" |
+| **Album art** | The cover of the current CarPlay track next to the now playing text |
 | **Map zoom** | Zoom the CarPlay map on the AID with the steering-wheel ▲/▼ buttons (short press: zoom, long press: map view) |
 
 One installer, one uninstaller, every change backed up. Firmware other than the one listed under
@@ -23,6 +24,8 @@ Built on the work of **omonob**, **LuKa** and **edzenis**, see [Credits](#credit
 ## Screenshots
 
 ![Navigation hints from CarPlay on the AID: arrow and distance to the next maneuver, distance and time to the destination, CarPlay map in the middle](docs/screenshots/nav-hints-aid.jpg)
+
+![Now playing and album art from CarPlay on the AID audio tab: artist, album, title and the track's cover](docs/screenshots/now-playing-album-art.jpg)
 
 ## Tested on
 
@@ -41,9 +44,9 @@ The installer only accepts MU1367 (checked by the `lsd.jxe` size) with the stock
 stay passive on any mismatch.
 
 > [!NOTE]
-> Status: navigation hints, now playing and map zoom work on this car. The one-step installer was run on
-> it with **Install / update** from the Green Engineering Menu, over an earlier manual install. Please
-> report how it behaves on yours.
+> Status: navigation hints, now playing, album art and map zoom work on this car. The one-step installer
+> was run on it with **Install / update** from the Green Engineering Menu, over an earlier manual install.
+> Please report how it behaves on yours.
 
 ## Requirements
 
@@ -75,7 +78,7 @@ files. A root shell (SSH / telnet) is not needed, but works too, see [Install ov
 
    | Button | What it does |
    | --- | --- |
-   | **Install / update** | Installs all three features. It checks everything first and stops without changes if something does not match; the last line must be `INSTALL_OK`. |
+   | **Install / update** | Installs all features. It checks everything first and stops without changes if something does not match; the last line must be `INSTALL_OK`. |
    | **Status** | Shows what is installed (read only). |
    | **Navigation hints off / on** | Turns the hints off or on without uninstalling (applies after replugging the iPhone). |
    | **Uninstall** | Removes everything and restores the backups, see [Uninstall](#uninstall). |
@@ -111,7 +114,9 @@ Optional, before copying: `cd Custom/GreenMenu/scripts/egolf/payload && shasum -
 | Hook switches | `/mnt/app/rgi_enable_preload`, `rgi_allow_send`, `rgi_allow_rx` | deleted on uninstall |
 | Route guidance message IDs (`[ident]` section) | `/mnt/system/etc/mm/iap2.cfg` | `/mnt/system/etc/mm/iap2.cfg.pre_rgi` |
 | Route guidance → AID (Java) | `/mnt/app/eso/hmi/lsd/jars/ua/mib/rgi/*.class` | deleted on uninstall |
-| Now playing + autostart | `/mnt/app/eso/hmi/lsd/jars/CarPlayAID.jar` | deleted on uninstall |
+| Now playing, album art + autostart | `/mnt/app/eso/hmi/lsd/jars/CarPlayAID.jar` | deleted on uninstall |
+| Album art tool (`cpcover`) | `/mnt/app/carplayaid/cpcover` | deleted on uninstall |
+| Album art pictures (created while CarPlay plays) | `/var/app/icab/tmp/egolf_cp_*.png` (the HMI's cover cache) | deleted on uninstall |
 | Map zoom (only if not there yet) | `/mnt/app/eso/hmi/lsd/jars/CarPlayClusterControls.jar` | deleted on uninstall if we installed it |
 | Guarded block that loads the jars | `/mnt/app/eso/hmi/lsd/lsd.sh` (between `# >>> e-golf-mib2` and `# <<< e-golf-mib2`) | `/mnt/app/carplay_aid_backup/lsd.sh.orig` |
 
@@ -140,6 +145,7 @@ mount -uw /mnt/app
 mv /mnt/app/armle/usr/sbin/mm-ipod.real /mnt/app/armle/usr/sbin/mm-ipod
 cp /mnt/app/carplay_aid_backup/lsd.sh.orig /mnt/app/eso/hmi/lsd/lsd.sh
 rm -f /mnt/app/eso/hmi/lsd/jars/CarPlayAID.jar /mnt/app/rgi_enable_preload
+rm -rf /mnt/app/carplayaid
 mount -uw /mnt/system
 cp /mnt/system/etc/mm/iap2.cfg.pre_rgi /mnt/system/etc/mm/iap2.cfg
 sync
@@ -167,7 +173,6 @@ Reboot afterwards. Keep your own copy of the unit's firmware or a full dump befo
 
 - **Labels on the AID**: street names and maneuver text from CarPlay.
 - **Fix the CarPlay map artifacts on the AID.**
-- Album art from CarPlay next to the now playing text (works in tests, not in this package yet).
 
 ## How it works
 
@@ -186,6 +191,9 @@ AID: arrow, distance, distance and time to destination
 ```
 
 Now playing reads the iAP2 driver's PPS object `/ramdisk/pps/iap2/nowplaying` and fills the AID audio tab.
+For album art, `cpcover` takes the cover the iAP2 driver already received from the iPhone, scales it with
+the unit's own image library to the 256×256 PNG the AID shows, and `CarPlayAID.jar` hands it to the cockpit
+through the HMI's cover-art service under a BAP current-station handle of its own.
 Map zoom forwards the steering-wheel buttons to the CarPlay map stream (omonob). Sources and build notes:
 [`src/`](src/README.md). Credits and licenses: [NOTICE.md](NOTICE.md).
 
@@ -202,7 +210,7 @@ This project stands on the work of others. Thank you!
 
 Written for this project: the native hook for the iPhone driver on MU1367 (identification, route
 guidance request and receive), the route guidance → AID driver, the mapping of CarPlay maneuver types to
-VW cockpit arrows, now playing on the AID and the installer.
+VW cockpit arrows, now playing and album art on the AID and the installer.
 License details are in [NOTICE.md](NOTICE.md).
 
 ## Support

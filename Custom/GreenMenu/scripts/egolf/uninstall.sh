@@ -27,8 +27,10 @@ else
     say "   no block of ours"
 fi
 
-say "-- now playing"
-rm -f "$JARS/CarPlayAID.jar"
+say "-- now playing and album art"
+rm -f "$JARS/CarPlayAID.jar" "$COVER_TOOL"
+rmdir "$COVER_DIR" 2>/dev/null
+rm -f "$ICAB_TMP"/egolf_cp_*.png
 if [ -e "$BACKUP/BatteryVC.jar" ] && [ ! -e "$JARS/BatteryVC.jar" ]; then
     mv "$BACKUP/BatteryVC.jar" "$JARS/BatteryVC.jar" && say "   BatteryVC.jar restored"
 fi

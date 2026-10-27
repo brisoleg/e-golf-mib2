@@ -13,6 +13,8 @@ import de.vw.mib.bap.mqbab2.generated.audiosd.serializer.CurrentStationInfo_Stat
  * from the iAP2 driver's PPS object instead of the plain "Apple CarPlay" the factory HMI sends for
  * the CarPlay source.
  *
+ * Feeds the track artwork to CarPlayCover (album art on the AID).
+ *
  * Also starts the CarPlay route guidance poller (ua.mib.rgi.RgiModule) once the HMI is up, so
  * turn-by-turn hints reach the AID after every boot.
  *
@@ -41,6 +43,7 @@ public class NowPlaying {
                     try {
                         Thread.sleep(REFRESH_MS);
                         if (reload()) csi.process(-1);
+                        CarPlayCover.tick();
                     } catch (Throwable e) {
                         // never let anything escape into the HMI
                     }
@@ -93,7 +96,7 @@ public class NowPlaying {
                     String delta = new String(buf, 0, n, "UTF8");
                     if (delta.indexOf("MediaItemTitle:") >= 0 || delta.indexOf("MediaItemArtist:") >= 0
                             || delta.indexOf("MediaItemAlbumTitle:") >= 0 || delta.indexOf("PlaybackStatus:") >= 0
-                            || delta.indexOf("-MediaItem") >= 0) {
+                            || delta.indexOf("MediaItemArtwork") >= 0 || delta.indexOf("-MediaItem") >= 0) {
                         synchronized (NowPlaying.class) {
                             nowPlayingModified = -1;
                         }
@@ -138,7 +141,7 @@ public class NowPlaying {
         long m = f.exists() ? f.lastModified() : 0;
         if (m == nowPlayingModified) return false;
         nowPlayingModified = m;
-        String title = "", artist = "", album = "", status = "";
+        String title = "", artist = "", album = "", status = "", artworkId = "", artworkSize = "";
         if (m != 0) {
             BufferedReader r = null;
             try {
@@ -154,6 +157,8 @@ public class NowPlaying {
                     else if (name.equals("MediaItemArtist")) artist = value;
                     else if (name.equals("MediaItemAlbumTitle")) album = value;
                     else if (name.equals("PlaybackStatus")) status = value;
+                    else if (name.equals("MediaItemArtworkFileTransferIdentifier")) artworkId = value;
+                    else if (name.equals("MediaItemArtworkSize")) artworkSize = value;
                 }
             } catch (Throwable e) {
                 // keep what was parsed
@@ -164,6 +169,7 @@ public class NowPlaying {
         boolean changed = !title.equals(npTitle) || !artist.equals(npArtist) || !album.equals(npAlbum)
                 || !status.equals(npStatus);
         npTitle = title; npArtist = artist; npAlbum = album; npStatus = status;
+        CarPlayCover.artworkChanged(artworkId, artworkSize);
         return changed;
     }
 }

@@ -1,6 +1,6 @@
 ###########################################################################################
 #
-# e-golf-mib2: CarPlay navigation hints, now playing and map zoom on the AID
+# e-golf-mib2: CarPlay navigation hints, now playing, album art and map zoom on the AID
 # https://github.com/brisoleg/e-golf-mib2
 #
 ###########################################################################################
@@ -13,7 +13,7 @@ screen  e-golf-mib2 MQBCoding
 
 keyValue
     value   String sys 0x00000000 0
-    label   "CarPlay on the AID: navigation hints, now playing, map zoom"
+    label   "CarPlay on the AID: navigation hints, now playing, album art, map zoom"
     poll    0
 
 keyValue
