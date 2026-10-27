@@ -41,9 +41,9 @@ The installer only accepts MU1367 (checked by the `lsd.jxe` size) with the stock
 stay passive on any mismatch.
 
 > [!NOTE]
-> Status of 1.0.0: navigation hints, now playing and map zoom were validated on this car. The one-step
-> installer and the standalone `CarPlayAID.jar` are new in this release and were tested on a simulated
-> unit file system; please report how they behave on yours.
+> Status: navigation hints, now playing and map zoom work on this car. The one-step installer was run on
+> it with **Install / update** from the Green Engineering Menu, over an earlier manual install. Please
+> report how it behaves on yours.
 
 ## Requirements
 
@@ -154,7 +154,7 @@ Reboot afterwards. Keep your own copy of the unit's firmware or a full dump befo
 - **Google Maps** sends the turn arrow and the distance to the maneuver only while the car is moving
   (parked it sends distance and time to destination only).
 - **Waze** does not send route guidance to the car, so nothing is shown for it.
-- Street names and maneuver text are not shown yet, and the arrival time (ETA) circle is not filled.
+- Street names and maneuver text are not shown yet.
 - CarPlay hints take over the AID only while the built-in navigation is not guiding.
 - `BatteryVC.jar` (an older mod from the same author) replaces the same HMI class as `CarPlayAID.jar`;
   the installer moves it aside and the uninstaller puts it back.
