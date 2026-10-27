@@ -204,13 +204,13 @@ This project stands on the work of others. Thank you!
 | Who | What this project uses |
 | --- | --- |
 | [omonob](https://github.com/omonob) — [MHI2-Carplay-Maps](https://github.com/omonob/MHI2-Carplay-Maps) | The CarPlay map on the AID (a requirement, installed separately) and `CarPlayClusterControls.jar` for the steering-wheel zoom, shipped unmodified (GPL-3.0) |
-| [LuKa](https://github.com/luka-dev) — [mib2q-carplay-rgi](https://github.com/luka-dev/mib2q-carplay-rgi) | `ManeuverMapper`: CarPlay maneuver types → VW cockpit arrows |
 | [LuKa](https://github.com/luka-dev) — [qnx65-armv7-toolchain](https://github.com/luka-dev/qnx65-armv7-toolchain) | The QNX 6.5 ARMv7 toolchain used to build the native hook |
 | [edzenis](https://github.com/edzenis) — [mib2high-carplay-rgi](https://github.com/edzenis/mib2high-carplay-rgi) | Reference for the iAP2 route guidance messages |
 | [jilleb](https://github.com/jilleb) — [mib2-toolbox](https://github.com/jilleb/mib2-toolbox) | The Green Engineering Menu install method |
 
 Written for this project: the native hook for the iPhone driver on MU1367 (identification, route
-guidance request and receive), the route guidance → AID driver, now playing on the AID and the installer.
+guidance request and receive), the route guidance → AID driver, the mapping of CarPlay maneuver types to
+VW cockpit arrows, now playing on the AID and the installer.
 License details are in [NOTICE.md](NOTICE.md).
 
 ## Support
@@ -223,4 +223,4 @@ map fixes, test hardware) on [Ko-fi](https://ko-fi.com/yumiko58185).
 ## License
 
 [GPL-3.0](LICENSE) for the code in this repository. `CarPlayClusterControls.jar` is omonob's work under
-GPL-3.0; `ManeuverMapper` is LuKa's work, kept with its copyright notice. See [NOTICE.md](NOTICE.md).
+GPL-3.0. See [NOTICE.md](NOTICE.md).
